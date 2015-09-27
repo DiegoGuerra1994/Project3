@@ -28,6 +28,7 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 		boolean flag = true;
 		while(flag){
+		System.out.print("Give me a command");
 		String input = scan.nextLine();
 		/*First we check if it its a commnd*/
 		if(input.charAt(0) == '/'){
