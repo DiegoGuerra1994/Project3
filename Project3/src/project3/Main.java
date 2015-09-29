@@ -11,13 +11,14 @@ public class Main {
 					java.io.BufferedReader reader = new java.io.BufferedReader(file_reader);
 					String line = reader.readLine();
 					while (line != null) {
-						if(line != "*"){
-							dictionary.put(line.hashCode(), line);
+						if(line.charAt(0) != '*'){
+							line = line.substring(0,5);
+							Integer hash = (Integer) line.hashCode();
+							dictionary.put(hash, line);
 						}
 						line = reader.readLine();
 					}
 					reader.close();
-		
 		return dictionary;
 		
 	}
@@ -28,7 +29,6 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 		boolean flag = true;
 		while(flag){
-		System.out.print("Give me a command");
 		String input = scan.nextLine();
 		/*First we check if it its a commnd*/
 		if(input.charAt(0) == '/'){
@@ -44,10 +44,13 @@ public class Main {
 			String[] words = input.split(" ");
 			String firstWord;
 			String secondWord;
+			
 			if(words.length == 2){
 				firstWord = words[0] ;
 				secondWord = words[1];
+				//dic.put((Integer)firstWord.hashCode(), firstWord);
 				System.out.println(firstWord + secondWord);
+				System.out.println(dic.get((Integer)firstWord.hashCode()));
 				//put word ladder fxn here?
 			}
 			else{
