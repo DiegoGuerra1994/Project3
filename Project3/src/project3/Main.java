@@ -39,27 +39,26 @@ public class Main {
 		
 	while(flag){
 		for(int y=0; y< 5; y++){
-			for(int x=0; x<25; x++){
-				int charr = (rootNode.word.charAt(y)%96+x)%25;
+			for(int x=0; x< 26; x++){
+				int charr = (rootNode.word.charAt(y)%96+x)%26;
 				String newWord = (rootNode.word).substring(0,y) + alphabet[charr] + (rootNode.word).substring(y+1,5);
 				if(dic.get(newWord.hashCode()) != null && !(usedWords.contains(newWord))){
-					if(newWord.equals("money")){
+					if(newWord.equals(secondWord)){
 						newNode.word = newWord;
 						newNode.parent = rootNode;
 						flag = false;
 						y=6;
 						x=200;
 					}
-					else if(firstNodeIsEmpty){
-						usedWords.add(newWord);
-						firstNode.word = newWord;
-						firstNodeIsEmpty = false;
-					}
 					else{
 						usedWords.add(newWord);
 						newNode.word = newWord;
 						newNode.parent = rootNode;
 						newNode.next = new Node();
+						if (firstNodeIsEmpty){
+							firstNode = newNode;
+							firstNodeIsEmpty = false;
+						}
 						newNode = newNode.next;
 					}
 				}
@@ -72,7 +71,6 @@ public class Main {
 			rootNode = rootNode.next;
 		}
 		firstNode = newNode;
-		firstNodeIsEmpty = true;
 	}	
 		
 		
