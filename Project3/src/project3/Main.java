@@ -3,6 +3,13 @@ import java.io.*;
 
 public class Main {
 	
+	
+	private class Node{
+		private Node parent;
+		private String word;
+		
+	}
+	
 	private static HashMap<Integer,String> makeDictionary() throws IOException{
 		HashMap<Integer, String> dictionary = new HashMap<Integer, String>();
 		/*Build the dictionary*/
@@ -26,6 +33,7 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException{
 		HashMap<Integer, String> dic = makeDictionary();
+		Set<String> usedWords = new HashSet<String>();
 		Scanner scan = new Scanner(System.in);
 		boolean flag = true;
 		while(flag){
@@ -49,8 +57,30 @@ public class Main {
 				firstWord = words[0] ;
 				secondWord = words[1];
 				//dic.put((Integer)firstWord.hashCode(), firstWord);
-				System.out.println(firstWord + secondWord);
-				System.out.println(dic.get((Integer)firstWord.hashCode()));
+				if(dic.get(firstWord.hashCode()) == null || dic.get(secondWord.hashCode()) == null){
+					System.out.println("Not a valid word");
+				}
+				else{
+					usedWords.add(firstWord);
+					usedWords.add(secondWord);
+					String newWord = firstWord;
+					
+					for(int letterPos = 0; letterPos < 5; letterPos++){
+						for(int character = 0; character < 26; character++){
+							char a = newWord.charAt(letterPos);
+							newWord.replace(a, 'q');
+							if(dic.get(newWord.hashCode()) != null){
+								System.out.println(newWord);
+							}
+							
+						}
+					}
+					
+					
+					System.out.println(firstWord + secondWord);
+				}
+				
+				
 				//put word ladder fxn here?
 			}
 			else{
