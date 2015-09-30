@@ -28,7 +28,10 @@ public class Main {
 		HashMap<Integer, String> dic = makeDictionary();
 		Scanner scan = new Scanner(System.in);
 		boolean flag = true;
+		//--------Main Screen-------
+		System.out.print("Welcome to WordLadders");
 		while(flag){
+		System.out.print("Command me");
 		String input = scan.nextLine();
 		/*First we check if it its a commnd*/
 		if(input.charAt(0) == '/'){
