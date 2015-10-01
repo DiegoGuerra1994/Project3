@@ -24,7 +24,7 @@ public class Main {
 		
 	}
 	
-	private static String[] findWordLadder(String firstWord, String secondWord, HashMap<Integer,String> dic){
+	private static ArrayList<String> findWordLadder(String firstWord, String secondWord, HashMap<Integer,String> dic){
 		Set<String> usedWords = new HashSet<String>();
 		char[] alphabet = new char[26];
 		for(int x = 0; x< 26;x++){
@@ -35,20 +35,20 @@ public class Main {
 		Node newNode = new Node();
 		Node firstNode = new Node(rootNode, newNode, "");
 		boolean firstNodeIsEmpty = true;
-		boolean flag = true;
-		
-	while(flag){
+	outerloop:
+	while(true){
 		for(int y=0; y< 5; y++){
 			for(int x=0; x< 26; x++){
-				int charr = (rootNode.word.charAt(y)%96+x)%26;
-				String newWord = (rootNode.word).substring(0,y) + alphabet[charr] + (rootNode.word).substring(y+1,5);
+				if(rootNode.word.equals("")){
+					return null;
+				}
+				String newWord = (rootNode.word).substring(0,y) + alphabet[x] + (rootNode.word).substring(y+1,5);
 				if(dic.get(newWord.hashCode()) != null && !(usedWords.contains(newWord))){
 					if(newWord.equals(secondWord)){
 						newNode.word = newWord;
 						newNode.parent = rootNode;
-						flag = false;
-						y=6;
-						x=200;
+						
+						break outerloop;
 					}
 					else{
 						usedWords.add(newWord);
@@ -66,27 +66,24 @@ public class Main {
 		}
 		if(rootNode.next == null){ //end of layer
 		rootNode = firstNode;
+		
 		}
 		else{ //continue on layer
 			rootNode = rootNode.next;
 		}
+		
 		firstNode = newNode;
 	}	
 		
 		
-		
-		
-		
+	
 		ArrayList<String> stringLadder = new ArrayList<String>();
-		while(newNode != null){
+		while(newNode != null){ //Since we are at the last element of the tree, we want it to be First in, Last out
 			stringLadder.add(0, newNode.word);
 			newNode = newNode.parent;
 		}
-		
-		for(String x: stringLadder){
-			System.out.println(x);
-		}
-		return null;
+	
+		return stringLadder;
 		
 	}
 	
@@ -122,7 +119,7 @@ public class Main {
 		while(flag){
 		String input = scan.nextLine();
 		
-		/*First we check if it its a commnd*/
+		/*First we check if it its a command*/
 		
 		
 		
@@ -139,20 +136,26 @@ public class Main {
 			String[] words = input.split(" ");
 			String firstWord;
 			String secondWord;
-			
 			if(words.length == 2){
 				firstWord = words[0] ;
 				secondWord = words[1];
-				//dic.put((Integer)firstWord.hashCode(), firstWord);
-				if(dic.get(firstWord.hashCode()) == null || dic.get(secondWord.hashCode()) == null){
+				if(firstWord.equals(secondWord)){ //Don't need to go through tree ladder
+					System.out.println(firstWord);
+				}
+				else if(dic.get(firstWord.hashCode()) == null || dic.get(secondWord.hashCode()) == null){ //Word doesn't exist
 					System.out.println("Not a valid word");
 				}
 				else{
 					
-					String[] ladder = findWordLadder(firstWord,secondWord, dic);
-				/*	for(String x: ladder){
-						System.out.println(x);
-					}*/
+					ArrayList<String> ladder = findWordLadder(firstWord,secondWord, dic);
+					if(ladder == null){ 
+						System.out.println("Permutation does not exist");
+					}
+					else{
+						for(String x: ladder){
+							System.out.println(x);
+						}
+					}
 					
 				}
 			}
