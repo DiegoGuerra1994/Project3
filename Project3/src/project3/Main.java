@@ -139,17 +139,14 @@ public class Main {
 			if(words.length == 2){
 				firstWord = words[0] ;
 				secondWord = words[1];
-				if(firstWord.equals(secondWord)){ //Don't need to go through tree ladder
-					System.out.println(firstWord);
-				}
-				else if(dic.get(firstWord.hashCode()) == null || dic.get(secondWord.hashCode()) == null){ //Word doesn't exist
-					System.out.println("Not a valid word");
+				if(dic.get(firstWord.hashCode()) == null || dic.get(secondWord.hashCode()) == null || firstWord.equals(secondWord)){ //Word doesn't exist
+					System.out.println("No word ladder can be found between " + firstWord + " and " + secondWord);
 				}
 				else{
 					
 					ArrayList<String> ladder = findWordLadder(firstWord,secondWord, dic);
 					if(ladder == null){ 
-						System.out.println("Permutation does not exist");
+						System.out.println("No word ladder can be found between " + firstWord + " and " + secondWord);
 					}
 					else{
 						for(String x: ladder){
