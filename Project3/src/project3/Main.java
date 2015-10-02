@@ -25,13 +25,13 @@ public class Main {
 	}
 	
 	private static ArrayList<String> findWordLadder(String firstWord, String secondWord, HashMap<Integer,String> dic){
-		Set<String> usedWords = new HashSet<String>();
-		char[] alphabet = new char[26];
+		Set<String> usedWords = new HashSet<String>(); //stores the words that we've already found 
+		char[] alphabet = new char[26]; //making the alphabet
 		for(int x = 0; x< 26;x++){
 			alphabet[x] = (char)(97+x);
 		}
 		usedWords.add(firstWord);
-		Node rootNode = new Node(null, null, firstWord);
+		Node rootNode = new Node(null, null, firstWord); //parent, next, word
 		Node newNode = new Node();
 		Node firstNode = new Node(rootNode, newNode, "");
 		boolean firstNodeIsEmpty = true;
@@ -42,7 +42,7 @@ public class Main {
 				if(rootNode.word.equals("")){ //rootNode will only be valid if it has a word in it. If it's not valid, that is because there are no more words availabe to link
 					return null;
 				}
-				String newWord = (rootNode.word).substring(0,y) + alphabet[x] + (rootNode.word).substring(y+1,5);
+				String newWord = (rootNode.word).substring(0,y) + alphabet[x] + (rootNode.word).substring(y+1,5); //iterates through the alphabet, changing one letter at a time
 				if(dic.get(newWord.hashCode()) != null && !(usedWords.contains(newWord))){ //Word is in dictionary and has not been used before
 					if(newWord.equals(secondWord)){
 						newNode.word = newWord;
@@ -72,14 +72,14 @@ public class Main {
 			rootNode = rootNode.next;
 		}
 		
-		firstNode = newNode; //
+		firstNode = newNode; //update the first element of the row to be the latest node
 	}	
 		
 		
 	
 		ArrayList<String> stringLadder = new ArrayList<String>();
 		while(newNode != null){ //Since we are at the last element of the tree, we want it to be First in, Last out
-			stringLadder.add(0, newNode.word);
+			stringLadder.add(newNode.word);
 			newNode = newNode.parent;
 		}
 	
@@ -117,9 +117,10 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 		boolean flag = true;
 		while(flag){
+		System.out.print("Command me>>");
 		String input = scan.nextLine();
 		
-		/*First we check if it its a command*/
+		/*First we check if it is a command*/
 		if(input.charAt(0) == '/'){
 			String sub = (input.substring(1, input.length()));
 			if( sub.matches("quit")){
@@ -147,8 +148,8 @@ public class Main {
 					}
 					else{
 						System.out.println("a " + (ladder.size()-2) + "-run word ladder exists between " + firstWord + " and " + secondWord);
-						for(String x: ladder){
-							System.out.println("\t"+x);
+						for(int x=ladder.size()-1; x>= 0; x--){
+							System.out.println("\t"+ladder.get(x));
 						}
 					}
 					
