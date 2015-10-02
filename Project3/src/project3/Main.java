@@ -4,7 +4,7 @@ import java.io.*;
 public class Main {
 	
 	
-	private static class Node{
+	private static class Node{ //We need a Node class because we need reference to the parent for BFF
 		public Node parent;
 		public String word;
 		public Node next;
@@ -36,14 +36,14 @@ public class Main {
 		Node firstNode = new Node(rootNode, newNode, "");
 		boolean firstNodeIsEmpty = true;
 	outerloop:
-	while(true){
-		for(int y=0; y< 5; y++){
+	while(true){ //BFF implemintation  
+		for(int y=0; y< 5; y++){ //
 			for(int x=0; x< 26; x++){
-				if(rootNode.word.equals("")){
+				if(rootNode.word.equals("")){ //rootNode will only be valid if it has a word in it. If it's not valid, that is because there are no more words availabe to link
 					return null;
 				}
 				String newWord = (rootNode.word).substring(0,y) + alphabet[x] + (rootNode.word).substring(y+1,5);
-				if(dic.get(newWord.hashCode()) != null && !(usedWords.contains(newWord))){
+				if(dic.get(newWord.hashCode()) != null && !(usedWords.contains(newWord))){ //Word is in dictionary and has not been used before
 					if(newWord.equals(secondWord)){
 						newNode.word = newWord;
 						newNode.parent = rootNode;
@@ -64,15 +64,15 @@ public class Main {
 				}
 			}
 		}
-		if(rootNode.next == null){ //end of layer
+		if(rootNode.next == null){ //end of layer, go to next layer of BFF
 		rootNode = firstNode;
 		
 		}
-		else{ //continue on layer
+		else{ //continue on the same layer
 			rootNode = rootNode.next;
 		}
 		
-		firstNode = newNode;
+		firstNode = newNode; //
 	}	
 		
 		
@@ -120,9 +120,6 @@ public class Main {
 		String input = scan.nextLine();
 		
 		/*First we check if it its a command*/
-		
-		
-		
 		if(input.charAt(0) == '/'){
 			String sub = (input.substring(1, input.length()));
 			if( sub.matches("quit")){
@@ -149,8 +146,9 @@ public class Main {
 						System.out.println("No word ladder can be found between " + firstWord + " and " + secondWord);
 					}
 					else{
+						System.out.println("a " + (ladder.size()-2) + "-run word ladder exists between " + firstWord + " and " + secondWord);
 						for(String x: ladder){
-							System.out.println(x);
+							System.out.println("\t"+x);
 						}
 					}
 					
