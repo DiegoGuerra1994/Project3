@@ -1,9 +1,15 @@
+/*
+ *Programmers: 
+ *Diego Guerra and Oriana Wong
+ *dag3222 and oyw58*/
+
+
 import java.util.*;
 import java.io.*;
 
 public class Main {
 	
-	
+//----The Node class are the elements where we store the words in the Word Ladder----	
 	private static class Node{ //We need a Node class because we need reference to the parent for BFF
 		public Node parent;
 		public String word;
@@ -23,7 +29,7 @@ public class Main {
 		}
 		
 	}
-	
+//----insert every possible word into a Node and links it back to the word it derived from------	
 	private static ArrayList<String> findWordLadder(String firstWord, String secondWord, HashMap<Integer,String> dic){
 		Set<String> usedWords = new HashSet<String>(); //stores the words that we've already found 
 		char[] alphabet = new char[26]; //making the alphabet
@@ -36,20 +42,26 @@ public class Main {
 		Node firstNode = new Node(rootNode, newNode, "");
 		boolean firstNodeIsEmpty = true;
 	outerloop:
-	while(true){ //BFF implemintation  
-		for(int y=0; y< 5; y++){ //
+	while(true){ //BFF implemintation
+/*-----The two for loops creates every possible word combination resulting from the firstWord----
+-------The first for loop determines which letter position we're changing. While the second for loop---
+-------changes the letter at that position. I.E. if y=0, and firstWord=crate. The next words will be drate, erate, frate, and etc.----*/
+		for(int y=0; y< 5; y++){ 
 			for(int x=0; x< 26; x++){
 				if(rootNode.word.equals("")){ //rootNode will only be valid if it has a word in it. If it's not valid, that is because there are no more words availabe to link
 					return null;
 				}
+//----Once this possible combination is found, it's compared to the dictionary's words to determine if the newWord exists.------
+//----It's also compared to the a list of existingWords we've already found in order to avoid duplicate possibilities of words.----
 				String newWord = (rootNode.word).substring(0,y) + alphabet[x] + (rootNode.word).substring(y+1,5); //iterates through the alphabet, changing one letter at a time
 				if(dic.get(newWord.hashCode()) != null && !(usedWords.contains(newWord))){ //Word is in dictionary and has not been used before
 					if(newWord.equals(secondWord)){
 						newNode.word = newWord;
 						newNode.parent = rootNode;
-						
+//-----If the newWord matches our second word, we're done!------
 						break outerloop;
 					}
+//-----If the newWord is just a valid word, then we put it into a new Node, one of the many possible nodes that make up the wordLadder.-----
 					else{
 						usedWords.add(newWord);
 						newNode.word = newWord;
@@ -64,10 +76,13 @@ public class Main {
 				}
 			}
 		}
+//----If all the possible word combinations derived from words in this row are found, make a new row in the tree that stores all possible 
+//----word combinations for the words found in the layer before.----	
 		if(rootNode.next == null){ //end of layer, go to next layer of BFF
 		rootNode = firstNode;
 		
 		}
+//Otherwise, keep adding to this row, all the possible words that can be derived from the words in the row before it.
 		else{ //continue on the same layer
 			rootNode = rootNode.next;
 		}
@@ -76,7 +91,7 @@ public class Main {
 	}	
 		
 		
-	
+//-----This method traces back our nodes after we've found the SEcondWord and creates an arraylist out of the words----	
 		ArrayList<String> stringLadder = new ArrayList<String>();
 		while(newNode != null){ //Since we are at the last element of the tree, we want it to be First in, Last out
 			stringLadder.add(newNode.word);
@@ -110,7 +125,7 @@ public class Main {
 		
 	}
 	
-	
+//----This method is the client interface----
 	public static void main(String[] args) throws IOException{
 		HashMap<Integer, String> dic = makeDictionary();
 		
